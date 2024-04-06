@@ -5,7 +5,7 @@ import color from '../color'
 export default function TaskDashBoardHeader({onPress,title}) {
   return (
        <TouchableOpacity underlayColor={color.Grey} style={styles.container} onPress={onPress}>
-        <Text style={{padding:10,fontSize:10}}>{title}</Text>
+        <Text style={{padding:10,fontSize:15,color:"white"}}>{title}</Text>
         </TouchableOpacity>
   )
 }
@@ -13,13 +13,12 @@ export default function TaskDashBoardHeader({onPress,title}) {
 
 const styles=StyleSheet.create({
     container:{
-        marginTop:100,
-          justifyContent:"center",
+          marginLeft:10,
           alignItems:"center",
-          height:50,
-          width:130,
-          margin:10,
+          height:47,
+          width:110,
+         
           borderRadius:25,
-          backgroundColor:color.DarkBlue
+          backgroundColor:"black"
       },
 })

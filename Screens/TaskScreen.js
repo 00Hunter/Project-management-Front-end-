@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UpdateTasks } from '../redux/tasks/tasks';
 
 export default function TaskScreen({ route }) {
+
     const entities = useSelector((state) => state);
     const dispatch = useDispatch();
     const data = route.params;
@@ -47,7 +48,7 @@ export default function TaskScreen({ route }) {
             </View>
 
             <View style={styles.taskList}>
-                {filteredTasks.map((task, index) => (
+                {filteredTasks&&filteredTasks.map((task, index) => (
                     <View key={index} style={styles.task}>
                         <CheckBox
                             value={task.Completed}

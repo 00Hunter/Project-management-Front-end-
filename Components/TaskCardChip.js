@@ -6,21 +6,21 @@ export default function TaskCardChip({onPress,title,isPressed}) {
   
   return (
     <TouchableOpacity underlayColor={color.Grey} style={styles.container} onPress={onPress}>
-        <Text style={{fontSize:12}}>{title}</Text>
+        <Text style={{fontSize:12,color:"white"}}>{title}</Text>
     </TouchableOpacity>
   )
 }
 
 const styles=StyleSheet.create({
     container:{
-      // backgroundColor:"black",
+      backgroundColor:"black",
         justifyContent:"center",
         alignItems:"center",
         height:30,
         width:90,
         margin:10,
         borderRadius:15,
-        backgroundColor:color.DarkBlue
+        // backgroundColor:color.DarkBlue
     },
 
 })

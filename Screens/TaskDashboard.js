@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text, Touchable, StatusBar, SafeAreaView } from "react-native";
 import TaskCard from "../Components /TaskCard";
 import AddButton from "../Components /AddButton";
 
@@ -15,7 +15,7 @@ export default function TaskDashboard({ navigation }) {
   const dispatch = useDispatch();
 
   const entities = useSelector((state) => state);
-  // console.log(entities.Project);
+  // console.log(entities.Project[0])
 
   function handleDelete(index) {
     dispatch(removeTask(index));
@@ -45,46 +45,46 @@ export default function TaskDashboard({ navigation }) {
     })
   );
   return (
-    <View style={styles.container}>
-      <View>
+    <SafeAreaView style={styles.container}>
+      <View style={{flexDirection:"row",alignItems:"center"}}>
+      <Text style={{fontSize:35,flex:1,marginLeft:10}}>Welcome</Text>
+      <View style={{marginLeft:10}}>
+      <AddButton text={'Create'} onpress={() => navigation.navigate("CreateTask")}/>
+      </View>
+      </View>
+      <View style={{margin:10}} >
         <ScrollView horizontal={true}>
           <TaskDashBoardHeader title={`Completed ${CompletedTask}`} />
           <TaskDashBoardHeader title={`Left ${NotCompleted}`} />
         </ScrollView>
       </View>
-
       <View style={styles.list}></View>
       <ScrollView>
         {entities.Project && entities.Project.length > 0 ? (
-          entities.Project.map((i, index) => {
-            console.log(i);
-            return (
-              <TaskCard
-                text={i.Project}
-                tag={i.Tags}
-                date={i.DueDate}
-                onPressDelete={() => {
-                  dispatch(removeTask(i.id));
-                }}
-                onPress={() => {
-                  // console.log(i.id);
-                  navigation.navigate('Task',{taskData:i});
-                  // dispatch(UpdateProject(i.id));
-                }}
-              />
-            );
-          })
+         entities.Project.map((item,index)=>{
+          return (
+  <TaskCard
+    text={entities.Project[index].Project}
+    tag={entities.Project[index].Tags}
+    date={entities.Project[index].DueDate}
+    onPressDelete={() => {
+      dispatch(removeTask(i.id));
+    }}
+    onPress={() => {
+      // console.log("helpop[ppppppppppp"+i);
+      navigation.navigate('Task',{taskData:entities.Project[index]});
+
+      // dispatch(UpdateProject(i.id));
+    }}
+  />
+);
+         })
         ) : (
           <Text>Add some task</Text>
         )}
       </ScrollView>
-      <View style={styles.addbutton}>
-        <AddButton
-          onpress={() => navigation.navigate("CreateTask")}
-        ></AddButton>
-        <View />
-      </View>
-    </View>
+   </SafeAreaView>
+      
   );
 }
 
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    marginTop:StatusBar.currentHeight+10,
     flexDirection: "column",
     justifyContent: "flex-end",
     // backgroundColor:"#000000"
@@ -104,3 +105,4 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
+

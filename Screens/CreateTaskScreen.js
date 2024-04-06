@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 
+import moment from "moment";
 import color from "../color";
 import Chip from "../Components /Chip";
 
@@ -18,27 +19,30 @@ import { addProject } from "../redux/project";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ion from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { TextInput } from "react-native-paper";
 import CheckBox from "expo-checkbox";
 import { addTasks, UpdateTasks } from "../redux/tasks/tasks";
+import AddButton from "../Components /AddButton";
 
-// import DateTimePicker from '@react-native-community/datetimepicker';
 
 const list = ["Important", "Urgent", "Not Important", "Not Urgent"];
+
 export default function CreateTaskScreen({ navigation }) {
   const entities = useSelector((state) => state);
   const dispatch = useDispatch();
-
-  const [inputValue, setInputValue] = useState("");
   const [text, setText] = React.useState("");
   const [date, setDate] = useState(new Date());
+  const [dateDisplay,setDateDisplay]=useState(moment().format('llll'));
   const [showPicker, setShowPicker] = useState(false);
   const [isVisible, setVisible] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowPicker(Platform.OS === "ios"); // Close the picker on iOS
+    setDateDisplay(moment(currentDate).format('llll'))
     setDate(currentDate);
+    console.log(date)
     setuserProjects({
       ...userProjects,
       DueDate: JSON.stringify(currentDate),
@@ -47,7 +51,7 @@ export default function CreateTaskScreen({ navigation }) {
   };
 
   const handleOnSubmitEditing = () => {
-    // console.log("Input submitted:", text);
+   
     setTask({
       ProjectName: userProjects.Project,
       Task: text,
@@ -78,33 +82,48 @@ export default function CreateTaskScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
         <ScrollView>
       <View style={styles.TitleContainer}>
-        <Text style={styles.title} on>
-          Create Task
+        <Text style={styles.title} >
+          Create Project
         </Text>
+        <AddButton text={'Add'} onpress={() =>{
+          dispatch(addProject(userProjects));
+          navigation.navigate("TaskList")}}/>
       </View>
       <View style={styles.heading}>
-        <Text style={{ fontSize: 15, marginLeft: 10 }}>Task Title </Text>
+        <Text style={{ fontSize: 15, marginLeft: 10,fontWeight:"bold", }}>Project Title </Text>
         <View style={styles.textInput}>
           <TextInput
-            onChangeText={(text) => {
-              setuserProjects({ ...userProjects, Project: text });
-            }}
-            placeholder="Task"
-            style={{ padding: 10, fontSize: 15 }}
-          ></TextInput>
+          style={{
+            borderWidth:1,
+            borderColor:"black",
+            height: 30,
+            width: "95%",
+            backgroundColor: 'white',
+            padding: 10,
+            borderRadius:5,
+            alignSelf:"center"
+          }}
+          placeholder="Name"
+          onChangeText={(text) => {
+            setuserProjects({ ...userProjects, Project: text });
+          }}
+        ></TextInput>
         </View>
       </View>
-      <View style={styles.date}>
-        <View>
-          <Icon
+      {/* Date component */}
+
+      <View style={{marginTop:40}}>
+        <View style={{flexDirection:"row",marginLeft:10}}>
+        <Icon
             name={"calendar"}
             size={24}
-            color={color.DarkBlue}
-            onPress={() => setShowPicker(true)}
+            color={"black"}
           />
-          <TouchableOpacity
-            onPress={() => setShowPicker(true)}
-          ></TouchableOpacity>
+          <Text style={{fontSize:14,marginLeft:'2%',justifyContent:"center"}}>Due Date</Text>
+          </View>
+            <TouchableOpacity onPress={() => {setShowPicker(true)}} style={{marginLeft:'10%'}}>
+              <Text style={{fontSize:20}}>{dateDisplay}</Text>
+            </TouchableOpacity>
           {showPicker && (
             <DateTimePicker
               value={date}
@@ -114,16 +133,34 @@ export default function CreateTaskScreen({ navigation }) {
               onChange={onChange}
             />
           )}
+
+      </View>
+      
+      
+      <View style={styles.disbox}>
+        <View style={{flexDirection:"row",marginLeft:10,marginBottom:7}}>
+        <MaterialIcons name="description" size={24}/>
+        <Text>Description</Text>
         </View>
-      </View>
-      <View>
-        <Button
-          title="Tasks"
-          onPress={() => {
-            setVisible(true);
+        <TextInput
+          style={{
+            borderWidth:1,
+            borderColor:"black",
+            height: 130,
+            width: "93%",
+            backgroundColor: 'white',
+            padding: 10,
+            borderRadius:5,
+            alignItems:"center",
+            alignSelf:"center"
           }}
-        ></Button>
+          placeholder="Description"
+          onChangeText={(text) => {
+            setuserProjects({ ...userProjects, Descrip: text });
+          }}
+        ></TextInput>
       </View>
+
       <View style={styles.tags}>
         {list.map((item, index) => {
           return (
@@ -136,27 +173,16 @@ export default function CreateTaskScreen({ navigation }) {
           );
         })}
       </View>
-      <View style={styles.disbox}>
-        <TextInput
-          style={{
-            height: 200,
-            width: "95%",
-            backgroundColor: color.LightBlue,
-            padding: 10,
+      
+       
+      <View>
+        <Button
+          title="Tasks"
+          onPress={() => {
+            setVisible(true);
           }}
-          placeholder="Description"
-          onChangeText={(text) => {
-            setuserProjects({ ...userProjects, Descrip: text });
-          }}
-        ></TextInput>
+        ></Button>
       </View>
-      <Button
-        title="add"
-        onPress={() => {
-          dispatch(addProject(userProjects));
-          navigation.navigate("TaskList");
-        }}
-      ></Button>
 
       {/* //Modal to add tasks  */}
       <Modal visible={isVisible}>
@@ -211,19 +237,17 @@ export default function CreateTaskScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.Grey,
+    backgroundColor: "white",
   },
   calendar: {
     marginRight: 20,
   },
   date: {
-    marginTop: 20,
+    marginTop: 50,
     margin: 10,
     flexDirection: "row",
   },
   disbox: {
-    alignItems: "center",
-    padding: 5,
     marginTop: 50,
   },
   heading: {
@@ -237,7 +261,6 @@ const styles = StyleSheet.create({
   modalInputContainer: {
     marginTop: 100,
     marginLeft: 10,
-    // backgroundColor:color.Cream,
     height: 60,
     width: "95%",
     borderColor: color.LightBlue,
@@ -245,31 +268,51 @@ const styles = StyleSheet.create({
   modalInput: {
     height: 60,
     fontSize: 40,
-    backgroundColor: color.LightBlue,
-    // fontSize:20,
-    // alignSelf:"center"
+    backgroundColor:"black",
   },
 
   TitleContainer: {
-    alignItems: "center",
+    flexDirection:"row",
+    alignItems:"center",
     marginTop: 40,
-    // marginVertical:20
   },
   title: {
-    fontSize: 20,
+    flex:1,
+    fontSize: 30,
     fontWeight: "bold",
   },
   textInput: {
-    height: 50,
-    margin: 10,
-    backgroundColor: color.LightBlue,
+    height: 30,
+    marginTop:'2%',
+    // margin: 10,
     borderRadius: 10,
-    opacity: 0.7,
-    shadowColor: color.DarkBlue,
+    
   },
   tags: {
     marginTop: 30,
     flexDirection: "row",
     flexWrap: "wrap",
   },
+  container1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  input: {
+    justifyContent:"center",
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    width: '45%',
+  },
+  leftInput: {
+    marginRight: '5%',
+  },
+  rightInput: {
+    marginLeft: '5%',
+  }
 });

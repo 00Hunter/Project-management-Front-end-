@@ -7,8 +7,7 @@ const Date = ({ date, onSelectDate, selected }) => {
    * if today, show 'Today'
    * if not today, show day of the week e.g 'Mon', 'Tue', 'Wed'
    */
-  const day =
-    moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")
+  const day =moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")
       ? "Today"
       : moment(date).format("ddd");
   // get the day number e.g 1, 2, 3, 4, 5, 6, 7

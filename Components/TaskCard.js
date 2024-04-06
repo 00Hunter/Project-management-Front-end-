@@ -37,7 +37,7 @@ export default function TaskCard({date,onPressDelete,tag,text,onPress}) {
             <TaskCardChip title={tag}/>
             </View>
             <View style={styles.date}>
-            <Icon name={'calendar'} size={24} color={color.DarkBlue} />
+            <Icon name={'calendar'} size={24} color={"black"} />
                 <Text style={{fontSize:13,marginLeft:15}}>{date}</Text>
             </View>
         </View>

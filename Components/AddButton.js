@@ -1,26 +1,20 @@
 import React from 'react'
-import { View,StyleSheet, TouchableOpacity } from 'react-native'
+import { View,StyleSheet, TouchableOpacity ,Text} from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../color'
 
-export default function AddButton({onpress}) {
+export default function AddButton({onpress,text}) {
   return (
+    <View style={{backgroundColor:"black",width:85,height:30,marginRight:10,borderRadius:20}}>
     <TouchableOpacity onPress={onpress}>
-   <View style={styles.container}>
-   <AntDesign name="pluscircleo" size={60} color={colors.DarkBlue} />
-   </View>
-   </TouchableOpacity>
+      <Text style={{color:"white", fontSize:13,alignSelf:"center",marginTop:4}}>{text}</Text>
+    </TouchableOpacity>
+  </View>
   )
 }
 
 const styles=StyleSheet.create({
     container:{
-        marginTop:100,
-        marginLeft:100,
-        // height:70,
-        // width:70,
-        // borderRadius:50,
-        // borderColor:"black",
-        // borderWidth:1
+
     }
 })
