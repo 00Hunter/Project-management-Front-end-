@@ -62,8 +62,10 @@ export default function TaskDashboard({ navigation }) {
       <ScrollView>
         {entities.Project && entities.Project.length > 0 ? (
          entities.Project.map((item,index)=>{
+          console.log(entities.Project[index].DueDate)
           return (
   <TaskCard
+  key={index}
     text={entities.Project[index].Project}
     tag={entities.Project[index].Tags}
     date={entities.Project[index].DueDate}

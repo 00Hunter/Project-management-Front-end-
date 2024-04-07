@@ -18,11 +18,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { addProject } from "../redux/project";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Ion from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { TextInput } from "react-native-paper";
-import CheckBox from "expo-checkbox";
-import { addTasks, UpdateTasks } from "../redux/tasks/tasks";
+
 import AddButton from "../Components /AddButton";
 
 
@@ -50,6 +48,9 @@ export default function CreateTaskScreen({ navigation }) {
     });
   };
 
+  const datestring={
+    setDate
+  }
   const handleOnSubmitEditing = () => {
    
     setTask({
@@ -172,63 +173,8 @@ export default function CreateTaskScreen({ navigation }) {
             ></Chip>
           );
         })}
-      </View>
+      </View> 
       
-       
-      <View>
-        <Button
-          title="Tasks"
-          onPress={() => {
-            setVisible(true);
-          }}
-        ></Button>
-      </View>
-
-      {/* //Modal to add tasks  */}
-      <Modal visible={isVisible}>
-        <View style={styles.modal}>
-          <View style={styles.modalInputContainer}>
-            <TextInput
-              mode="outlined"
-              outlineColor={color.Grey}
-              activeOutlineColor={color.DarkBlue}
-              style={styles.modalInput}
-              onChangeText={(text) => setText(text)}
-              onSubmitEditing={handleOnSubmitEditing}
-            />
-
-            <Ion
-              name="add-outline"
-              size={24}
-              onPress={() => {
-                dispatch(addTasks(Task));
-                // setText();
-              }}
-            ></Ion>
-
-            {entities.Task && entities.Task.length > 0 ? (
-              filteredTask.map((item, index) => {
-                // console.log(item);
-                return (
-                  <View>
-                    <CheckBox value={entities.Task.Completed} style={{}} />
-                    <Text>{item.Task}</Text>
-                  </View>
-                );
-              })
-            ) : (
-              <Text>Add Something please</Text>
-            )}
-            <Button
-              title="Done Adding "
-              onPress={() => {
-                setVisible(false);
-                setTask();
-              }}
-            ></Button>
-          </View>
-        </View>
-      </Modal>
       </ScrollView>
     </SafeAreaView>
   );
